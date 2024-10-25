@@ -86,7 +86,7 @@ class AuthRequestValidator(
         if (country.length > MAX_COUNTRY_NAME_LENGTH) {
             throw InvalidRequestException(COUNTRY_NAME_IS_TOO_LONG)
         }
-        val nameRegex = Regex("^[a-zA-Z'-]+$")
+        val nameRegex = Regex("^[a-zA-Z'\\-]+(\\s[a-zA-Z'\\-]+)*$")
         if (!country.matches(nameRegex)) {
             throw InvalidRequestException(COUNTRY_NAME_CONTAINS_INVALID_CHARACTERS)
         }
