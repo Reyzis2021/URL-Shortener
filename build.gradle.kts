@@ -117,7 +117,6 @@ tasks.named("sonarqube") {
 
 openApiGenerate {
     generatorName.set("kotlin")
-    inputSpec.set("$projectDir/src/main/resources/openapi/shorten-url-api.yaml")
     outputDir.set("${layout.buildDirectory}/generated/api")
     apiPackage.set("com.zufar.urlshortener.api")
     modelPackage.set("com.zufar.urlshortener.dto")
