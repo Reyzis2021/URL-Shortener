@@ -3,7 +3,6 @@ plugins {
     kotlin("plugin.spring") version "1.9.25"
     id("org.springframework.boot") version "3.3.3"
     id("io.spring.dependency-management") version "1.1.6"
-    id("org.openapi.generator") version "7.8.0"
     id("org.sonarqube") version "5.0.0.4638"
     jacoco
 }
@@ -35,6 +34,9 @@ val springdocVersion = "2.6.0"
 val javaxValidationApiVersion = "2.0.1.Final"
 val commonsValidatorVersion = "1.9.0"
 
+val jjwtApiVersion = "0.11.5"
+
+
 dependencies {
     // Spring Boot MVC
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -47,9 +49,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
 
     // JWT
-    implementation("io.jsonwebtoken:jjwt-api:0.11.5")
-    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
-    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
+    implementation("io.jsonwebtoken:jjwt-api:$jjwtApiVersion")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:$jjwtApiVersion")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:$jjwtApiVersion")
 
     // Password Encoding
     implementation("org.springframework.security:spring-security-crypto")
@@ -115,26 +117,12 @@ tasks.named("sonarqube") {
     dependsOn("jacocoTestReport") // Ensure JaCoCo report is generated before SonarCloud analysis
 }
 
-openApiGenerate {
-    generatorName.set("kotlin")
-    outputDir.set("${layout.buildDirectory}/generated/api")
-    apiPackage.set("com.zufar.urlshortener.api")
-    modelPackage.set("com.zufar.urlshortener.dto")
-    configOptions.put("useJakartaEe", "true")
-    configOptions.put("interfaceOnly", "true")
-    configOptions.put("useTags", "true")
-}
-
 sourceSets {
     main {
         kotlin {
             srcDirs("${layout.buildDirectory}/generated/api/src/main/kotlin")
         }
     }
-}
-
-tasks.named("compileKotlin") {
-    dependsOn(tasks.named("openApiGenerate"))
 }
 
 jacoco {
